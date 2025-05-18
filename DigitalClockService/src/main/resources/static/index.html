@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Digital Clock</title>
+    <script>
+        function fetchTime() {
+            const timezone = document.getElementById("timezone").value;
+            const format = document.getElementById("format").value;
+            fetch(`/api/time?timezone=${timezone}&format=${format}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("timeDisplay").innerText =
+                        data.error ? data.error : `${data.time} (${data.timezone})`;
+                });
+        }
+
+        setInterval(fetchTime, 20000);
+        window.onload = fetchTime;
+    </script>
+</head>
+<body>
+    <h1>Digital Clock</h1>
+    <label>Timezone: 
+        <input id="timezone" value="UTC">
+    </label>
+    <label>Format: 
+        <select id="format">
+            <option value="24">24-hour</option>
+            <option value="12">12-hour</option>
+        </select>
+    </label>
+    <button onclick="fetchTime()">Get Time</button>
+    <p id="timeDisplay"></p>
+</body>
+</html>
